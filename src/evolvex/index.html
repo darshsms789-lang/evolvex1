@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EvolveX</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Inter,system-ui;
+background:#070707;
+color:white;
+display:flex;
+height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:240px;
+background:#0f0f0f;
+border-right:1px solid #1f1f1f;
+padding:30px 20px;
+}
+
+.logo{
+font-size:22px;
+font-weight:600;
+margin-bottom:30px;
+}
+
+.menu{
+color:#8a8a8a;
+font-size:14px;
+line-height:28px;
+}
+
+/* Main */
+
+.main{
+flex:1;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:40px;
+}
+
+/* Header */
+
+.header{
+width:100%;
+max-width:900px;
+margin-bottom:25px;
+}
+
+.title{
+font-size:28px;
+font-weight:600;
+margin-bottom:5px;
+}
+
+.subtitle{
+color:#777;
+}
+
+/* Input */
+
+.search-box{
+width:100%;
+max-width:900px;
+display:flex;
+gap:10px;
+}
+
+input{
+flex:1;
+padding:16px;
+background:#121212;
+border:1px solid #262626;
+border-radius:14px;
+color:white;
+font-size:15px;
+}
+
+input:focus{
+outline:none;
+border-color:#4a6cf7;
+}
+
+button{
+padding:14px 22px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#5c7cff,#7a5cff);
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+/* Status */
+
+.status{
+margin-top:15px;
+color:#aaa;
+font-size:14px;
+}
+
+/* Result Panel */
+
+.result{
+margin-top:30px;
+width:100%;
+max-width:900px;
+background:#101010;
+border:1px solid #1f1f1f;
+border-radius:18px;
+padding:30px;
+line-height:1.7;
+}
+
+/* Steps */
+
+.steps{
+margin-top:10px;
+color:#888;
+font-size:13px;
+}
+
+/* Loader */
+
+.loader{
+margin-top:12px;
+width:18px;
+height:18px;
+border:3px solid #222;
+border-top:3px solid #7a5cff;
+border-radius:50%;
+animation:spin 1s linear infinite;
+display:none;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<div class="logo">EvolveX</div>
+
+<div class="menu">
+Research Agent<br>
+AI Analysis<br>
+Insight Engine
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="header">
+
+<div class="title">Ask EvolveX</div>
+<div class="subtitle">AI that researches topics deeply</div>
+
+</div>
+
+<div class="search-box">
+
+<input
+id="query"
+placeholder="Research anything..."
+>
+
+<button onclick="runAgent()">Research</button>
+
+</div>
+
+<div class="status" id="status"></div>
+
+<div class="loader" id="loader"></div>
+
+<div class="steps" id="steps"></div>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+
+async function runAgent(){
+
+let query=document.getElementById("query").value
+
+if(!query){
+alert("Enter a research topic")
+return
+}
+
+document.getElementById("loader").style.display="block"
+document.getElementById("status").innerText="Agent researching..."
+document.getElementById("result").innerText=""
+document.getElementById("steps").innerText="Searching sources..."
+
+try{
+
+let response=await fetch("/research",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({query:query})
+})
+
+let data=await response.json()
+
+document.getElementById("loader").style.display="none"
+document.getElementById("status").innerText="Research complete"
+
+document.getElementById("steps").innerText=
+"Sources gathered • Information analyzed • Insights generated"
+
+document.getElementById("result").innerText=data.result
+
+}catch(err){
+
+document.getElementById("loader").style.display="none"
+document.getElementById("status").innerText="Error running research"
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

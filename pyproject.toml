@@ -1,0 +1,23 @@
+[project]
+name = "evolvex"
+version = "0.1.0"
+description = "evolvex using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "crewai[tools]>=0.108.0,<1.0.0"
+]
+
+[project.scripts]
+evolvex = "evolvex.main:run"
+run_crew = "evolvex.main:run"
+train = "evolvex.main:train"
+replay = "evolvex.main:replay"
+test = "evolvex.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"
